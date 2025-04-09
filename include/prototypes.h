@@ -607,6 +607,23 @@ extern	void	wakeup(void);
 /* in file write.c */
 extern	syscall	write(did32, char *, uint32);
 
+
+extern void wrongturn175(pid32);
+extern void wrongturn175a(pid32);
+extern void wrongturn175z(pid32);
+extern void delphi(void);
+extern void delphiz(void);
+extern void needarest(void);
+extern void main3(void);
+extern void mymain(void);
+extern void mainbonus(void);
+extern uint32 clkcounterfine;
+extern void managedetour(void);
+extern void myreceiver(void);
+extern void mysender(pid32, umsg32);
+
+
+
 /* in file xdone.c */
 extern	void	xdone(void);
 

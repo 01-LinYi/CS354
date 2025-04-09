@@ -55,6 +55,10 @@ pid32	create(
 	prptr->prdesc[1] = CONSOLE;
 	prptr->prdesc[2] = CONSOLE;
 
+    prptr->prasyncipc = 0;       // No callback registered initially
+    prptr->prrecvcbk = NULL;     // No callback function
+    prptr->prsleepret = 0;       // No saved return address
+
 	/* Initialize stack as if the process was called		*/
 
 	*saddr = STACKMAGIC;

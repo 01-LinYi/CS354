@@ -15,6 +15,8 @@ clkdisp:
 
 		call	clkhandler	# Call high level handler
 
+        incl clkcounterfine
+        
 		sti			# Restore interrupt status
 		popal			# Restore registers
 		iret			# Return from interrupt

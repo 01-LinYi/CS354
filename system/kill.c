@@ -13,6 +13,7 @@ syscall	kill(
 	intmask	mask;			/* Saved interrupt mask		*/
 	struct	procent *prptr;		/* Ptr to process's table entry	*/
 	int32	i;			/* Index into descriptors	*/
+	struct  perprocmem *curr, *next;
 
 	mask = disable();
 	if (isbadpid(pid) || (pid == NULLPROC)
@@ -20,6 +21,25 @@ syscall	kill(
 		restore(mask);
 		return SYSERR;
 	}
+
+	// Garbage collection - free unfreed heap memory
+    if (prptr->prheapbeg != NULL)
+	{
+        // If header exists, there's memory to clean up
+        curr = prptr->prheapbeg->memnext;
+        
+        // Free all memory blocks in the list
+        while(curr!=NULL)
+		{
+            next = curr->memnext;
+            freemem(curr->memptr, curr->memsize);
+            curr = next;
+        }
+        
+        // Free the header node itself
+        freemem((char *)prptr->prheapbeg, sizeof(struct perprocmem));
+        prptr->prheapbeg = NULL;
+    }
 
 	if (--prcount <= 1) {		/* Last user process completes	*/
 		xdone();

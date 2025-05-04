@@ -11,10 +11,6 @@ extern	void	*_end;		/* End of Xinu code			*/
 /* Function prototypes */
 
 extern	void main(void);	/* Main is the first process created	*/
-extern  void main3(void);
-extern  void mymain(void);
-extern  void mainbonus(void);
-
 static	void sysinit(); 	/* Internal system initialization	*/
 extern	void meminit(void);	/* Initializes the free memory list	*/
 local	process startup(void);	/* Process to finish startup tasks	*/
@@ -134,18 +130,9 @@ local process	startup(void)
 
 	/* Create a process to execute function main() */
 
-    kprintf("lin2014, LIN, Yi, Spring, 2025\n\n");
-    
-    /*resume(create((void *)main, INITSTK, INITPRIO,
-					"Main process", 0, NULL));*/
-    
-    /*resume(create((void *)main3, INITSTK, INITPRIO,
-					"Main process", 0, NULL));*/
+	kprintf("lin2014, LIN, Yi, Spring, 2025\n\n");
 
-    /*resume(create((void *)mymain, INITSTK, INITPRIO,
-					"Main process", 0, NULL));*/
-
-    resume(create((void *)mainbonus, INITSTK, INITPRIO,
+	resume(create((void *)main, INITSTK, INITPRIO,
 					"Main process", 0, NULL));
 
 	/* Startup process exits at this point */

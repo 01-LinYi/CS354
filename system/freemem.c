@@ -22,6 +22,19 @@ syscall	freemem(
 		return SYSERR;
 	}
 
+	// If not called from kheapextract, update process memory list
+    if (kheapflag == 0)
+	{
+        // If process has a memory list, extract this block from it
+        if (proctab[currpid].prheapbeg != NULL)
+            kheapextract(proctab[currpid].prheapbeg, blkaddr);
+    }
+	else
+	{
+        // Reset flag if called from kheapextract
+        kheapflag = 0;
+    }
+
 	nbytes = (uint32) roundmb(nbytes);	/* Use memblk multiples	*/
 	block = (struct memblk *)blkaddr;
 

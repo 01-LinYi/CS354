@@ -28,6 +28,30 @@ char  	*getmem(
 		if (curr->mlength == nbytes) {	/* Block is exact match	*/
 			prev->mnext = curr->mnext;
 			memlist.mlength -= nbytes;
+
+			// If not called from kheapinsert, track this memory in process list
+            if (kheapflag == 0)
+			{   
+                // If this is the first memory allocation, create header node
+                if (proctab[currpid].prheapbeg == NULL)
+				{
+                    kheapflag = 1; // Prevent recursive tracking
+                    proctab[currpid].prheapbeg = (struct perprocmem *)getmem(sizeof(struct perprocmem));
+                    proctab[currpid].prheapbeg->memnext = NULL;
+                    proctab[currpid].prheapbeg->memptr = NULL;
+                    proctab[currpid].prheapbeg->memsize = 0;
+                    kheapflag = 0;
+                }
+                
+                // Insert the allocated memory info into the process list
+                kheapinsert(proctab[currpid].prheapbeg, (char *)curr, nbytes);
+            }
+			else
+			{
+                // Reset flag if called from kheapinsert
+                kheapflag = 0;
+            }
+
 			restore(mask);
 			return (char *)(curr);
 
@@ -38,6 +62,30 @@ char  	*getmem(
 			leftover->mnext = curr->mnext;
 			leftover->mlength = curr->mlength - nbytes;
 			memlist.mlength -= nbytes;
+
+			// If not called from kheapinsert, track this memory in process list
+            if (kheapflag == 0)
+			{   
+                // If this is the first memory allocation, create header node
+                if (proctab[currpid].prheapbeg == NULL)
+				{
+                    kheapflag = 1; // Prevent recursive tracking
+                    proctab[currpid].prheapbeg = (struct perprocmem *)getmem(sizeof(struct perprocmem));
+                    proctab[currpid].prheapbeg->memnext = NULL;
+                    proctab[currpid].prheapbeg->memptr = NULL;
+                    proctab[currpid].prheapbeg->memsize = 0;
+                    kheapflag = 0;
+                }
+                
+                // Insert the allocated memory info into the process list
+                kheapinsert(proctab[currpid].prheapbeg, (char *)curr, nbytes);
+            }
+			else
+			{
+                // Reset flag if called from kheapinsert
+                kheapflag = 0;
+            }
+
 			restore(mask);
 			return (char *)(curr);
 		} else {			/* Move to next block	*/

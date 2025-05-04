@@ -52,10 +52,9 @@ struct procent {		/* Entry in the process table		*/
 	umsg32	prmsg;		/* Message sent to this process		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
-
-    uint16  prasyncipc;     // Flag for async IPC registration 
-    void    (*prrecvcbk)(void); // Pointer to callback function 
-    uint32  prsleepret;     // Original return address for sleepms 
+	struct perprocmem *prheapbeg;	/* Header node of allocated memory list */
+	void    (*prcbf)(void);	/* Callback function for alarm      */
+	uint32  pralrmcounter;	/* Alarm counter                    */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

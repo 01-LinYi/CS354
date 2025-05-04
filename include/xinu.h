@@ -39,6 +39,7 @@
 #include <multiboot.h>
 #include <stdio.h>
 #include <string.h>
+#include <heapmem.h>
 
 
 #ifdef XINUTEST
